@@ -4,14 +4,14 @@ import java.util.Collection;
 
 public class Result {
 
-    private final long faginDuration;
-    private final long sequentialDuration;
+    private final long durationFagin;
+    private final long durationSequential;
     private final int processedRows;
     private final Collection<Food> topRows;
 
-    public Result(long faginDuration, long sequentialDuration, int processedRows, Collection<Food> topRows) {
-        this.faginDuration = faginDuration;
-        this.sequentialDuration = sequentialDuration;
+    public Result(long durationFagin, long durationSequential, int processedRows, Collection<Food> topRows) {
+        this.durationFagin = durationFagin;
+        this.durationSequential = durationSequential;
         this.processedRows = processedRows;
         this.topRows = topRows;
     }
