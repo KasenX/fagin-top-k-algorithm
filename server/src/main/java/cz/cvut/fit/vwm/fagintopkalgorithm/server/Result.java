@@ -4,10 +4,10 @@ import java.util.Collection;
 
 public class Result {
 
-    final long faginDuration;
-    final long sequentialDuration;
-    final int processedRows;
-    final Collection<Food> topRows;
+    private final long faginDuration;
+    private final long sequentialDuration;
+    private final int processedRows;
+    private final Collection<Food> topRows;
 
     public Result(long faginDuration, long sequentialDuration, int processedRows, Collection<Food> topRows) {
         this.faginDuration = faginDuration;
