@@ -23,7 +23,7 @@ public class FoodService {
         ordered.put("fiber", food.stream().sorted((Comparator.comparingInt(Food::getFiber))).collect(Collectors.toList()));
     }
 
-    public Result getTopK(int k, Map<String, Boolean> columns) {
+    public Result getTopK(int k, String fn, Map<String, Boolean> columns) {
         // Time the Fagin's Top-k
         long startTime = System.nanoTime();
         Pair<Integer, List<Food>> rowsFagin = topFagin(k, columns);
@@ -35,7 +35,7 @@ public class FoodService {
         endTime = System.nanoTime();
         long durationSequential = endTime - startTime;
 
-        assert rowsFagin.equals(rowsSequential); // Check if the results are equal
+        assert rowsFagin.getSecond().equals(rowsSequential.getSecond()); // Check if the results are equal
 
         return new Result(durationFagin, durationSequential, rowsFagin.getFirst(), rowsFagin.getSecond());
     }

@@ -27,25 +27,30 @@ public class FoodController {
 
         // Validate parameters
         Set<String> keys = parameters.keySet();
-        if (keys.size() != 6 || !keys.contains("k") || !keys.contains("energy") || !keys.contains("protein")
-                || !keys.contains("carbohydrate") || !keys.contains("fat") || !keys.contains("fiber"))
+        if (keys.size() != 7 || !keys.contains("k") || !(keys.contains("fn")) || !keys.contains("energy")
+                || !keys.contains("protein") || !keys.contains("carbohydrate") || !keys.contains("fat")
+                || !keys.contains("fiber"))
             throw new IllegalArgumentException("parameter validation failed");
 
         int k = -1;
+        String fn = "";
         Map<String, Boolean> columns = new HashMap<>();
         // Parse parameters
         for (var parameter : keys) {
             // Parameter k
             if (parameter.equals("k"))
                 k = Integer.parseInt(parameters.get(parameter));
+            // Function parameter
+            else if (parameter.equals("fn"))
+                fn = parameters.get(parameter);
             // Columns parameters
             else
-                columns.put(parameter, parameters.get(parameter).equals("true"));
+                columns.put(parameter, parameters.get(parameter).equals("1"));
         }
-        // Validate k values
-        if (k <= 0)
-            throw new IllegalArgumentException("k parameter must be >= 0");
+        // Validate k and function
+        if (k <= 0 || (!fn.equals("max") && !fn.equals("min") && !fn.equals("avg")))
+            throw new IllegalArgumentException("parameter validation failed");
 
-        return service.getTopK(k, columns);
+        return service.getTopK(k, fn, columns);
     }
 }
