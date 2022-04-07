@@ -27,9 +27,8 @@ public class FoodController {
 
         // Validate parameters
         Set<String> keys = parameters.keySet();
-        if (keys.size() != 7 || !keys.contains("k") || !(keys.contains("fn")) || !keys.contains("energy")
-                || !keys.contains("protein") || !keys.contains("carbohydrate") || !keys.contains("fat")
-                || !keys.contains("fiber"))
+        if (keys.size() != 6 || !keys.contains("k") || !(keys.contains("fn")) || !keys.contains("energy")
+                || !keys.contains("protein") || !keys.contains("carbohydrate") || !keys.contains("fat"))
             throw new IllegalArgumentException("parameter validation failed");
 
         int k = -1;

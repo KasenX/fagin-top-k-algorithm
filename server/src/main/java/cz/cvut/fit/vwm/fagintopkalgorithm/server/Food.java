@@ -20,8 +20,6 @@ public class Food {
     private int Carbohydrate;
     @Column(nullable = false)
     private int Fat;
-    @Column(nullable = false)
-    private int Fiber;
 
     public Long getId() {
         return Id;
@@ -69,14 +67,6 @@ public class Food {
 
     public void setFat(int fat) {
         Fat = fat;
-    }
-
-    public int getFiber() {
-        return Fiber;
-    }
-
-    public void setFiber(int fiber) {
-        Fiber = fiber;
     }
 
     @Override

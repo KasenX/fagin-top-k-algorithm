@@ -20,7 +20,6 @@ public class FoodService {
         ordered.put("protein", food.stream().sorted((Comparator.comparingInt(Food::getProtein))).collect(Collectors.toList()));
         ordered.put("carbohydrate", food.stream().sorted((Comparator.comparingInt(Food::getCarbohydrate))).collect(Collectors.toList()));
         ordered.put("fat", food.stream().sorted((Comparator.comparingInt(Food::getFat))).collect(Collectors.toList()));
-        ordered.put("fiber", food.stream().sorted((Comparator.comparingInt(Food::getFiber))).collect(Collectors.toList()));
     }
 
     public Result getTopK(int k, String fn, Map<String, Boolean> columns) {
