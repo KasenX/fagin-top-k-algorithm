@@ -9,64 +9,64 @@ public class Food {
     @Id
     @GeneratedValue(generator="food_seq")
     @SequenceGenerator(name = "food_seq", sequenceName = "food_seq")
-    private Long Id;
+    private Long id;
     @Column(nullable = false)
-    private String Name;
+    private String name;
     @Column(nullable = false)
-    private int Energy;
+    private int energy;
     @Column(nullable = false)
-    private int Protein;
+    private int protein;
     @Column(nullable = false)
-    private int Carbohydrate;
+    private int carbohydrate;
     @Column(nullable = false)
-    private int Fat;
+    private int fat;
 
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Long id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
     public int getEnergy() {
-        return Energy;
+        return energy;
     }
 
     public void setEnergy(int energy) {
-        Energy = energy;
+        this.energy = energy;
     }
 
     public int getProtein() {
-        return Protein;
+        return protein;
     }
 
     public void setProtein(int protein) {
-        Protein = protein;
+        this.protein = protein;
     }
 
     public int getCarbohydrate() {
-        return Carbohydrate;
+        return carbohydrate;
     }
 
     public void setCarbohydrate(int carbohydrate) {
-        Carbohydrate = carbohydrate;
+        this.carbohydrate = carbohydrate;
     }
 
     public int getFat() {
-        return Fat;
+        return fat;
     }
 
     public void setFat(int fat) {
-        Fat = fat;
+        this.fat = fat;
     }
 
     @Override
@@ -74,11 +74,11 @@ public class Food {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Food food = (Food) o;
-        return Id.equals(food.Id);
+        return id.equals(food.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(Id);
+        return Objects.hash(id);
     }
 }
