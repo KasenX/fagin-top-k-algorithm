@@ -24,4 +24,32 @@ public class Result {
         this.durationFagin = durationFagin;
         this.durationSequential = durationSequential;
     }
+
+    public int getK() {
+        return k;
+    }
+
+    public Function getFunction() {
+        return function;
+    }
+
+    public Map<String, Boolean> getParameters() {
+        return parameters;
+    }
+
+    public int getProcessedRows() {
+        return processedRows;
+    }
+
+    public Collection<Food> getTopRows() {
+        return topRows;
+    }
+
+    public long getDurationFagin() {
+        return durationFagin;
+    }
+
+    public long getDurationSequential() {
+        return durationSequential;
+    }
 }
