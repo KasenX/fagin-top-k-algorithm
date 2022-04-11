@@ -35,7 +35,7 @@ public class FaginService {
 
         // assert rowsFagin.getSecond().equals(rowsSequential.getSecond()); // Check if the results are equal
 
-        return new Result(k, rowsFagin.getFirst(), fn, rowsFagin.getSecond(), durationFagin, durationSequential);
+        return new Result(k, fn, columns, rowsFagin.getFirst(), rowsFagin.getSecond(), durationFagin, durationSequential);
     }
 
     private Pair<Integer, List<Food>> topFagin(int k, Function fn, Map<String, Boolean> columns) {
