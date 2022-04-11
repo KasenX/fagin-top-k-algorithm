@@ -11,9 +11,11 @@ public class FaginService {
     FaginJpaRepository repository;
     private final Map<String, Food[]> ordered = new HashMap<>();
 
-    public FaginService(FaginJpaRepository repository) {
+    public FaginService(FaginJpaRepository repository) throws InterruptedException {
         this.repository = repository;
         List<Food> food = repository.findAll();
+        if (food.isEmpty())
+            throw new RuntimeException("the db is empty");
         ordered.put("energy", food.stream().sorted((Comparator.comparingInt(Food::getEnergy).reversed())).toArray(Food[]::new));
         ordered.put("protein", food.stream().sorted((Comparator.comparingInt(Food::getProtein).reversed())).toArray(Food[]::new));
         ordered.put("carbohydrate", food.stream().sorted((Comparator.comparingInt(Food::getCarbohydrate).reversed())).toArray(Food[]::new));
