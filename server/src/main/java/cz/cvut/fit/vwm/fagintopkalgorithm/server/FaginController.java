@@ -10,11 +10,11 @@ import java.util.Map;
 import java.util.Set;
 
 @RestController
-public class FoodController {
+public class FaginController {
 
-    private final FoodService service;
+    private final FaginService service;
 
-    public FoodController(FoodService service) {
+    public FaginController(FaginService service) {
         this.service = service;
     }
 
@@ -26,9 +26,9 @@ public class FoodController {
 
         // Validate parameters
         Set<String> keys = parameters.keySet();
-        if (keys.size() != 6 || !keys.contains("k") || !(keys.contains("fn")) || !keys.contains("energy")
+        if (keys.size() != 6 || !keys.contains("k") || !(keys.contains("function")) || !keys.contains("energy")
                 || !keys.contains("protein") || !keys.contains("carbohydrate") || !keys.contains("fat"))
-            throw new IllegalArgumentException("parameter validation failed");
+            throw new IllegalArgumentException("parameter validation failed - the presence of all parameters");
 
         int k = -1;
         String fn = "";
@@ -39,16 +39,24 @@ public class FoodController {
             if (parameter.equals("k"))
                 k = Integer.parseInt(parameters.get(parameter));
             // Function parameter
-            else if (parameter.equals("fn"))
+            else if (parameter.equals("function"))
                 fn = parameters.get(parameter);
             // Columns parameters
             else
                 columns.put(parameter, parameters.get(parameter).equals("1"));
         }
-        // Validate k and function
-        if (k <= 0 || (!fn.equals("max") && !fn.equals("min") && !fn.equals("avg")))
-            throw new IllegalArgumentException("parameter validation failed");
+        // Validate k
+        if (k <= 0)
+            throw new IllegalArgumentException("parameter validation failed - the value of parameter k");
 
-        return service.getTopK(k, fn, columns);
+        // Validate function
+        Function function = switch (fn) {
+            case "min" -> Function.MIN;
+            case "max" -> Function.MAX;
+            case "avg" -> Function.AVG;
+            default -> throw new IllegalArgumentException("parameter validation failed - the value of parameter function");
+        };
+
+        return service.getTopK(k, function, columns);
     }
 }

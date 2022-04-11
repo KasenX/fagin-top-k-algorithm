@@ -6,12 +6,12 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class FoodService {
+public class FaginService {
 
-    FoodJpaRepository repository;
+    FaginJpaRepository repository;
     private final Map<String, Food[]> ordered = new HashMap<>();
 
-    public FoodService(FoodJpaRepository repository) {
+    public FaginService(FaginJpaRepository repository) {
         this.repository = repository;
         List<Food> food = repository.findAll();
         ordered.put("energy", food.stream().sorted((Comparator.comparingInt(Food::getEnergy).reversed())).toArray(Food[]::new));
@@ -21,7 +21,7 @@ public class FoodService {
         normalize(food);
     }
 
-    public Result getTopK(int k, String fn, Map<String, Boolean> columns) {
+    public Result getTopK(int k, Function fn, Map<String, Boolean> columns) {
         // Time the Fagin's Top-k
         long startTime = System.nanoTime();
         Pair<Integer, List<Food>> rowsFagin = topFagin(k, fn, columns);
@@ -35,10 +35,10 @@ public class FoodService {
 
         // assert rowsFagin.getSecond().equals(rowsSequential.getSecond()); // Check if the results are equal
 
-        return new Result(durationFagin, durationSequential, rowsFagin.getFirst(), rowsFagin.getSecond());
+        return new Result(k, rowsFagin.getFirst(), fn, rowsFagin.getSecond(), durationFagin, durationSequential);
     }
 
-    private Pair<Integer, List<Food>> topFagin(int k, String fn, Map<String, Boolean> columns) {
+    private Pair<Integer, List<Food>> topFagin(int k, Function fn, Map<String, Boolean> columns) {
         Map<Food, Integer> selected = new HashMap<>();
         // Total count of attributes needed to be complete
         int columnsCount = (columns.get("energy") ? 1 : 0) + (columns.get("protein") ? 1 : 0)
@@ -72,7 +72,7 @@ public class FoodService {
         return Pair.of(rows, result);
     }
 
-    private Pair<Integer, List<Food>> topSequential(int k, String fn, Map<String, Boolean> columns) {
+    private Pair<Integer, List<Food>> topSequential(int k, Function fn, Map<String, Boolean> columns) {
         return null;
     }
 

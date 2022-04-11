@@ -37,10 +37,10 @@ public class Food {
     @JsonIgnore
     private double normFat;
 
-    public double applyFunction(String fn, Map<String, Boolean> columns) {
+    public double applyFunction(Function fn, Map<String, Boolean> columns) {
         double result = 0;
         switch (fn) {
-            case "min" -> {
+            case MIN -> {
                 result = 1;
                 if (columns.get("energy"))
                     result = Math.min(result, normEnergy);
@@ -51,7 +51,7 @@ public class Food {
                 if (columns.get("fat"))
                     result = Math.min(result, normFat);
             }
-            case "max" -> {
+            case MAX -> {
                 if (columns.get("energy"))
                     result = Math.max(result, normEnergy);
                 if (columns.get("protein"))
@@ -61,7 +61,7 @@ public class Food {
                 if (columns.get("fat"))
                     result = Math.max(result, normFat);
             }
-            case "avg" -> {
+            case AVG -> {
                 int count = 0;
                 if (columns.get("energy")) {
                     result += normEnergy;
