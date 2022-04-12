@@ -9,18 +9,19 @@ import java.util.*;
 public class FaginService {
 
     FaginJpaRepository repository;
+    List<Food> food;
     private final Map<String, Food[]> ordered = new HashMap<>();
 
-    public FaginService(FaginJpaRepository repository) throws InterruptedException {
+    public FaginService(FaginJpaRepository repository) {
         this.repository = repository;
-        List<Food> food = repository.findAll();
+        food = repository.findAll();
         if (food.isEmpty())
             throw new RuntimeException("the db is empty");
         ordered.put("energy", food.stream().sorted((Comparator.comparingInt(Food::getEnergy).reversed())).toArray(Food[]::new));
         ordered.put("protein", food.stream().sorted((Comparator.comparingInt(Food::getProtein).reversed())).toArray(Food[]::new));
         ordered.put("carbohydrate", food.stream().sorted((Comparator.comparingInt(Food::getCarbohydrate).reversed())).toArray(Food[]::new));
         ordered.put("fat", food.stream().sorted((Comparator.comparingInt(Food::getFat).reversed())).toArray(Food[]::new));
-        normalize(food);
+        normalize();
     }
 
     public Result getTopK(int k, Function fn, Map<String, Boolean> columns) {
@@ -67,29 +68,26 @@ public class FaginService {
                 foodFound += selected.get(ordered.get("fat")[rows]) == columnsCount ? 1 : 0;
             }
         }
-
-        List<Food> result = new ArrayList<>(selected.keySet());
-        result.sort((a, b) -> Double.compare(b.applyFunction(fn, columns), a.applyFunction(fn, columns)));
-
-        return Pair.of(rows, result);
+        return Pair.of(rows, selected.keySet().stream().sorted((a, b) -> Double.compare(b.applyFunction(fn, columns), a.applyFunction(fn, columns))).limit(k).toList());
     }
 
     private Pair<Integer, List<Food>> topSequential(int k, Function fn, Map<String, Boolean> columns) {
-        return null;
+        return Pair.of(food.size(), food.stream().sorted((a, b) -> Double.compare(b.applyFunction(fn, columns), a.applyFunction(fn, columns))).limit(k).toList());
     }
 
-    private void normalize(List<Food> food) {
+    private void normalize() {
         int lastIdx = food.size() - 1;
         // Get max and min values for each attribute
+        // First max then min
         Pair<Integer, Integer> energy = Pair.of(ordered.get("energy")[0].getEnergy(), ordered.get("energy")[lastIdx].getEnergy());
         Pair<Integer, Integer> protein = Pair.of(ordered.get("protein")[0].getProtein(), ordered.get("protein")[lastIdx].getProtein());
         Pair<Integer, Integer> carbohydrate = Pair.of(ordered.get("carbohydrate")[0].getCarbohydrate(), ordered.get("carbohydrate")[lastIdx].getCarbohydrate());
         Pair<Integer, Integer> fat = Pair.of(ordered.get("fat")[0].getFat(), ordered.get("fat")[lastIdx].getFat());
         for (var f : food) {
-            f.setNormEnergy(Util.normalize(f.getEnergy(), energy.getFirst(), energy.getSecond()));
-            f.setNormProtein(Util.normalize(f.getProtein(), protein.getFirst(), protein.getSecond()));
-            f.setNormCarbohydrate(Util.normalize(f.getCarbohydrate(), carbohydrate.getFirst(), carbohydrate.getSecond()));
-            f.setNormFat(Util.normalize(f.getFat(), fat.getFirst(), fat.getSecond()));
+            f.setNormEnergy(Util.normalize(f.getEnergy(), energy.getSecond(), energy.getFirst()));
+            f.setNormProtein(Util.normalize(f.getProtein(), protein.getSecond(), protein.getFirst()));
+            f.setNormCarbohydrate(Util.normalize(f.getCarbohydrate(), carbohydrate.getSecond(), carbohydrate.getFirst()));
+            f.setNormFat(Util.normalize(f.getFat(), fat.getSecond(), fat.getFirst()));
         }
     }
 }
