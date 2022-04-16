@@ -1,5 +1,6 @@
 package cz.cvut.fit.vwm.fagintopkalgorithm.server;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +17,7 @@ public class FaginController {
         this.service = service;
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/fagin")
     Result read(@RequestParam int k, @RequestParam String function, @RequestParam int energy, @RequestParam int protein,
                 @RequestParam int carbohydrate, @RequestParam int fat) {
