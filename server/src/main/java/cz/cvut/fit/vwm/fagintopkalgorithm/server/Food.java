@@ -24,6 +24,8 @@ public class Food {
     @Column(nullable = false)
     private int fat;
 
+    /* Pre-calculated normalised values
+    Ignore in database as well as in output json */
     @Transient
     @JsonIgnore
     private double normEnergy;
@@ -36,6 +38,7 @@ public class Food {
     @Transient
     @JsonIgnore
     private double normFat;
+
 
     public double applyFunction(Function fn, Map<String, Boolean> columns) {
         double result = 0;

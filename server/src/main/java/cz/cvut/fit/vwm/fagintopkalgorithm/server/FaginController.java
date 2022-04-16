@@ -20,25 +20,25 @@ public class FaginController {
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/fagin")
     Result read(@RequestParam int k, @RequestParam String function, @RequestParam int energy, @RequestParam int protein,
-                @RequestParam int carbohydrate, @RequestParam int fat) {
+                @RequestParam int carbohydrate, @RequestParam int fat) throws Exception {
         // Validate k
         if (k <= 0)
-            throw new IllegalArgumentException("parameter validation failed - the value of parameter k");
+            throw new Exception("parameter validation failed - the value of parameter k");
 
         // Validate function
         Function fn = switch (function) {
             case "min" -> Function.MIN;
             case "max" -> Function.MAX;
             case "avg" -> Function.AVG;
-            default -> throw new IllegalArgumentException("parameter validation failed - the value of parameter function");
+            default -> throw new Exception("parameter validation failed - the value of parameter function");
         };
 
         // Get columns parameters into map
         Map<String, Boolean> columns = new HashMap<>() {{
-            put("energy", energy == 1);
-            put("protein", protein == 1);
-            put("carbohydrate", carbohydrate == 1);
-            put("fat", fat == 1);
+            put("energy", energy != 0);
+            put("protein", protein != 0);
+            put("carbohydrate", carbohydrate != 0);
+            put("fat", fat != 0);
         }};
 
         return service.getTopK(k, fn, columns);
