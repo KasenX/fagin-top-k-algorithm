@@ -1,0 +1,2 @@
+###
+GET http://localhost:8080/fagin?k=1&function=max&energy=1&protein=1&carbohydrate=1&fat=1
